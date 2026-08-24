@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Family Registry</title>
 <style>
-  /* ---------- CONFIG NOTE ----------
-     All settings you need to change live in the <script> block at the
-     bottom of this file, inside the CONFIG object.
-  ----------------------------------- */
-  
   /* BASE & LIGHT THEME VARIABLES */
   :root {
     --ink: #1c2b2e;
@@ -78,7 +73,6 @@
     overflow: hidden;
   }
 
-  /* Animated Background Orbs */
   .login-bg-shape {
     position: absolute;
     filter: blur(80px);
@@ -111,7 +105,6 @@
     100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(100px, 50px) rotate(45deg) scale(1.1); }
   }
 
-  /* Glassmorphism Card */
   .login-card {
     width: 380px; max-width: 90vw;
     background: rgba(30, 36, 41, 0.45);
@@ -193,7 +186,6 @@
     box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
   }
   
-  /* Float label animation */
   .field input:focus + label,
   .field input:not(:placeholder-shown) + label {
     top: 6px; font-size: 10px; color: var(--gold);
@@ -277,6 +269,36 @@
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4; transform: scale(0.8);}}
 
   /* ---------- Dashboard Optimized ---------- */
+  .dashboard-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .dashboard-profile-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--amber);
+  }
+  .dashboard-profile-info h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    margin: 0 0 4px 0;
+    color: var(--ink);
+  }
+  .dashboard-profile-info p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
   .stat-grid{
     display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:18px; margin-bottom:30px;
   }
@@ -331,13 +353,11 @@
     border-radius:var(--radius);
     overflow-x: auto; 
     -webkit-overflow-scrolling: touch; 
-    /* Create a relative context for sticky child elements */
     position: relative;
   }
   
   table{width:100%;border-collapse:collapse;font-size:13.5px; white-space: nowrap; min-width: 600px;}
   
-  /* Give cells solid backgrounds so scrolling content hides under sticky items */
   thead th{ background: var(--table-head); }
   tbody td{ background: var(--card-bg); }
 
@@ -348,7 +368,6 @@
   }
   tbody td{ padding:13px 18px; border-bottom:1px solid var(--line); color: var(--ink); transition: background 0.2s; }
   
-  /* --- STICKY ACTIONS COLUMN FOR MOBILE --- */
   th:last-child, td:last-child {
     position: sticky;
     right: 0;
@@ -357,10 +376,9 @@
     box-shadow: -4px 0 12px rgba(0,0,0,0.03);
   }
   thead th:last-child {
-    z-index: 3; /* Header stays above rows */
+    z-index: 3;
   }
 
-  /* Touch-to-view Row styling */
   .clickable-row { cursor: pointer; }
   .clickable-row:hover td { background: rgba(0, 0, 0, 0.03); }
   body.dark-theme .clickable-row:hover td { background: rgba(255, 255, 255, 0.05); }
@@ -399,7 +417,6 @@
     display:flex;justify-content:flex-end;gap:14px;
   }
 
-  /* ---------- Responsive fixes ---------- */
   @media (max-width: 640px) {
     .form-grid { grid-template-columns: 1fr; }
     .topbar { flex-direction: column; align-items: stretch; text-align: center; }
@@ -414,7 +431,6 @@
 
 <!-- ============ LOGIN ============ -->
 <div id="loginScreen">
-  <!-- Morphing background shapes -->
   <div class="login-bg-shape shape1"></div>
   <div class="login-bg-shape shape2"></div>
   <div class="login-bg-shape shape3"></div>
@@ -430,7 +446,6 @@
 
     <form id="loginForm">
       <div class="field">
-        <!-- Input goes first for CSS adjacent sibling selector -->
         <input id="loginUser" type="text" autocomplete="username" placeholder=" " required>
         <label for="loginUser">Username</label>
       </div>
@@ -448,7 +463,7 @@
 <div id="app">
   <header class="topbar">
     <div class="topbar-left">
-      <img src="PIC02982 copy.jpg" alt="Logo" class="app-logo">
+      <img src="https://lh3.googleusercontent.com/pw/AP1GczMHGh0VPal1-aSySOhtBF9rAoZjbiAZH1AMldhLlaZUxf1Z_aFECgkZem-bKVwb5lCHgyqpzOkn44FDEirbQo5DPdRLkAwIJrsS3h76wn6flo-yItmJP9dKhQO8xPzydYfbSRHDgtSxUQE_JVn1etRSPg=w579-h869-s-no-gm" alt="Logo" class="app-logo">
       <h1>Family Registry</h1>
       <span class="role-badge" id="roleBadge">JIFFRY GS</span>
     </div>
@@ -475,6 +490,15 @@
 
     <!-- DASHBOARD -->
     <section id="panel-dashboard">
+      <!-- Profile section added from login screen -->
+      <div class="dashboard-profile-card">
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczMHGh0VPal1-aSySOhtBF9rAoZjbiAZH1AMldhLlaZUxf1Z_aFECgkZem-bKVwb5lCHgyqpzOkn44FDEirbQo5DPdRLkAwIJrsS3h76wn6flo-yItmJP9dKhQO8xPzydYfbSRHDgtSxUQE_JVn1etRSPg=w579-h869-s-no-gm" alt="User Avatar" class="dashboard-profile-avatar">
+        <div class="dashboard-profile-info">
+          <h2>Addalaichenai - 09</h2>
+          <p>Family Registry Dashboard Profile</p>
+        </div>
+      </div>
+
       <div class="stat-grid" id="statGrid"></div>
       <div class="panel">
         <h2 id="chartTitle">Overview</h2>
@@ -524,12 +548,15 @@
       <button class="modal-close" id="viewModalClose">×</button>
     </div>
     <div class="modal-body"><div class="detail-list" id="viewDetailList"></div></div>
-    <div class="modal-foot"><button class="btn" id="viewCloseBtn">Close</button></div>
+    <!-- UPDATED FOOTER -->
+    <div class="modal-foot" style="justify-content: space-between;">
+      <div id="viewModalActions" class="row-actions"></div>
+      <button class="btn" id="viewCloseBtn">Close</button>
+    </div>
   </div>
 </div>
 
 <script>
-/* CONFIGURATION REMAINS EXACTLY THE SAME */
 const CONFIG = {
   WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwkpLRVfGqgfqBITmHl6H75snkRm_6e40cTLkVx09z3e7Ojw_y6c1DA2GokoIDgBoda/exec',
   ADMIN_USER: 'jiffry',
@@ -542,7 +569,6 @@ const CONFIG = {
 
 let state = { role: null, headers: [], rows: [], filtered: [], editingRow: null };
 
-/* --- DARK MODE LOGIC --- */
 const btnTheme = document.getElementById('btnTheme');
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') document.body.classList.add('dark-theme');
@@ -554,11 +580,9 @@ btnTheme.addEventListener('click', () => {
   localStorage.setItem('theme', theme);
 });
 
-/* --- APPLICATION LOGIC --- */
 let loginRole = 'admin';
 const tabAdmin = document.getElementById('tabAdmin');
 const tabGuest = document.getElementById('tabGuest');
-const loginSubmit = document.getElementById('loginSubmit');
 
 function setLoginRole(role){
   loginRole = role;
@@ -638,7 +662,6 @@ document.getElementById('btnRefresh').addEventListener('click', loadData);
 
 function findHeader(keywords){ return state.headers.find(h => keywords.some(k => h.toLowerCase().includes(k))); }
 
-/* --- DASHBOARD LOGIC --- */
 function renderDashboard(){
   const grid = document.getElementById('statGrid');
   const rows = state.rows;
@@ -698,10 +721,10 @@ function renderDashboard(){
       <div class="label">${c.label}</div>
     </div>`).join('');
     
-  renderChart(sexCol, male, female, ageCol);
+  renderChart(sexCol, male, female);
 }
 
-function renderChart(sexCol, male, female, ageCol){
+function renderChart(sexCol, male, female){
   const bars = document.getElementById('chartBars');
   if (sexCol){
     const max = Math.max(1, male, female);
@@ -713,33 +736,24 @@ function renderChart(sexCol, male, female, ageCol){
 
 function activeColumns(){ return CONFIG.TABLE_COLUMNS.filter(c => state.headers.includes(c)); }
 
+// UPDATED function
 function renderTableHead(){
   const cols = activeColumns();
-  document.getElementById('tableHeadRow').innerHTML = cols.map(c => `<th>${c}</th>`).join('') + `<th>Actions</th>`;
+  document.getElementById('tableHeadRow').innerHTML = cols.map(c => `<th>${c}</th>`).join('');
 }
 
+// UPDATED function
 function renderTableBody(){
   const cols = activeColumns();
   const tbody = document.getElementById('tableBody');
   const rows = state.filtered;
   if (!rows.length){ tbody.innerHTML = `<tr><td colspan="100%">No records found.</td></tr>`; return; }
 
-  // Row is clickable for the View modal
+  // Only render the data cells, no action buttons in the row
   tbody.innerHTML = rows.map(r => {
     const cells = cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('');
-    
-    // Buttons stop event propagation so they don't trigger the row click
-    const actions = state.role === 'admin'
-      ? `<button class="btn small" data-view="${r._row}">View</button> <button class="btn small" data-edit="${r._row}">Edit</button> <button class="btn danger small" data-del="${r._row}">Del</button>`
-      : `<button class="btn small" data-view="${r._row}">View</button>`;
-      
-    return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${cells}<td><div class="row-actions" onclick="event.stopPropagation()">${actions}</div></td></tr>`;
+    return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${cells}</tr>`;
   }).join('');
-  
-  // Attach individual button event listeners (with propagation prevention)
-  tbody.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); openViewModal(Number(b.dataset.view)); }));
-  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); openEditModal(Number(b.dataset.edit)); }));
-  tbody.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); deleteRow(Number(b.dataset.del)); }));
 }
 
 function escapeHtml(v){ return String(v).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
@@ -750,10 +764,36 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   renderTableBody();
 });
 
+// UPDATED function
 function openViewModal(rowNum){
   const r = state.rows.find(x => x._row === rowNum);
   if (!r) return;
+  
+  // Populate details
   document.getElementById('viewDetailList').innerHTML = state.headers.map(h => `<div style="margin-bottom:8px"><b>${h}:</b> ${escapeHtml(r[h] ?? '')}</div>`).join('');
+  
+  // Handle Edit/Delete buttons inside the modal based on role
+  const actionsDiv = document.getElementById('viewModalActions');
+  if (state.role === 'admin') {
+    actionsDiv.innerHTML = `
+      <button class="btn primary small" id="popupEditBtn">Edit</button>
+      <button class="btn danger small" id="popupDelBtn">Delete</button>
+    `;
+    
+    // Attach event listeners for the new modal buttons
+    document.getElementById('popupEditBtn').onclick = () => {
+      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
+      openEditModal(rowNum); // Open Edit Modal
+    };
+    
+    document.getElementById('popupDelBtn').onclick = () => {
+      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
+      deleteRow(rowNum); // Trigger Delete
+    };
+  } else {
+    actionsDiv.innerHTML = ''; // Hide buttons for guests
+  }
+  
   document.getElementById('viewModalBackdrop').classList.add('show');
 }
 document.getElementById('viewModalClose').addEventListener('click', () => document.getElementById('viewModalBackdrop').classList.remove('show'));
