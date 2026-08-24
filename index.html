@@ -243,21 +243,16 @@
   .btn.danger:hover{background: rgba(168, 60, 60, 0.2);}
   .btn.small{padding:5px 10px;font-size:11.5px;}
 
-  /* ---------- Stylist Syncing Animation ---------- */
-  @keyframes stylish-spin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.15); stroke: var(--amber); }
-    100% { transform: rotate(360deg) scale(1); }
+  /* DISABLED BUTTON STATE */
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
   }
-  .sync-icon { 
-    display: inline-block; 
-    width: 14px; 
-    height: 14px; 
-    transition: transform 0.3s ease;
-  }
-  .syncing .sync-icon { 
-    animation: stylish-spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
-  }
+
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .sync-icon { display: inline-block; }
+  .syncing .sync-icon { animation: spin 1s linear infinite; }
 
   nav.tabs{
     display:flex; gap:4px; padding:0 22px; background: var(--panel); border-bottom: 1px solid var(--line);
@@ -379,7 +374,7 @@
     text-transform:uppercase; border-bottom:2px solid var(--line);
   }
   tbody td{ padding:13px 18px; border-bottom:1px solid var(--line); color: var(--ink); transition: background 0.2s; }
-  
+
   .clickable-row { cursor: pointer; }
   .clickable-row:hover td { background: rgba(0, 0, 0, 0.03); }
   body.dark-theme .clickable-row:hover td { background: rgba(255, 255, 255, 0.05); }
@@ -470,12 +465,7 @@
     </div>
     <div class="topbar-actions">
       <button class="btn" id="btnTheme">🌙 Theme</button>
-      <button class="btn" id="btnRefresh">
-        <svg class="sync-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.92-10.27l5.57 5.57"/>
-        </svg> 
-        Refresh
-      </button>
+      <button class="btn" id="btnRefresh"><span class="sync-icon">↻</span> Refresh</button>
       <button class="btn" id="btnExport">⇩ Export CSV</button>
       <button class="btn" id="btnPrint">⎙ Print</button>
       <button class="btn" id="btnSheet">▤ Sheet</button>
@@ -496,6 +486,7 @@
 
     <!-- DASHBOARD -->
     <section id="panel-dashboard">
+      <!-- Profile section added from login screen -->
       <div class="dashboard-profile-card">
         <img src="https://lh3.googleusercontent.com/pw/AP1GczMHGh0VPal1-aSySOhtBF9rAoZjbiAZH1AMldhLlaZUxf1Z_aFECgkZem-bKVwb5lCHgyqpzOkn44FDEirbQo5DPdRLkAwIJrsS3h76wn6flo-yItmJP9dKhQO8xPzydYfbSRHDgtSxUQE_JVn1etRSPg=w579-h869-s-no-gm" alt="User Avatar" class="dashboard-profile-avatar">
         <div class="dashboard-profile-info">
@@ -553,6 +544,7 @@
       <button class="modal-close" id="viewModalClose">×</button>
     </div>
     <div class="modal-body"><div class="detail-list" id="viewDetailList"></div></div>
+    <!-- UPDATED FOOTER -->
     <div class="modal-foot" style="justify-content: space-between;">
       <div id="viewModalActions" class="row-actions"></div>
       <button class="btn" id="viewCloseBtn">Close</button>
@@ -646,8 +638,6 @@ function setStatus(mode, text){
 }
 
 async function loadData(){
-  const refreshBtn = document.getElementById('btnRefresh');
-  refreshBtn.classList.add('syncing');
   setStatus('loading', 'Syncing…');
   try {
     const res = await fetch(CONFIG.WEB_APP_URL);
@@ -662,8 +652,6 @@ async function loadData(){
     renderTableBody();
   } catch(err){
     setStatus('off', 'Error: ' + err.message);
-  } finally {
-    refreshBtn.classList.remove('syncing');
   }
 }
 document.getElementById('btnRefresh').addEventListener('click', loadData);
@@ -744,17 +732,20 @@ function renderChart(sexCol, male, female){
 
 function activeColumns(){ return CONFIG.TABLE_COLUMNS.filter(c => state.headers.includes(c)); }
 
+// UPDATED function
 function renderTableHead(){
   const cols = activeColumns();
   document.getElementById('tableHeadRow').innerHTML = cols.map(c => `<th>${c}</th>`).join('');
 }
 
+// UPDATED function
 function renderTableBody(){
   const cols = activeColumns();
   const tbody = document.getElementById('tableBody');
   const rows = state.filtered;
   if (!rows.length){ tbody.innerHTML = `<tr><td colspan="100%">No records found.</td></tr>`; return; }
 
+  // Only render the data cells, no action buttons in the row
   tbody.innerHTML = rows.map(r => {
     const cells = cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('');
     return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${cells}</tr>`;
@@ -769,12 +760,15 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   renderTableBody();
 });
 
+// UPDATED function
 function openViewModal(rowNum){
   const r = state.rows.find(x => x._row === rowNum);
   if (!r) return;
   
+  // Populate details
   document.getElementById('viewDetailList').innerHTML = state.headers.map(h => `<div style="margin-bottom:8px"><b>${h}:</b> ${escapeHtml(r[h] ?? '')}</div>`).join('');
   
+  // Handle Edit/Delete buttons inside the modal based on role
   const actionsDiv = document.getElementById('viewModalActions');
   if (state.role === 'admin') {
     actionsDiv.innerHTML = `
@@ -782,17 +776,18 @@ function openViewModal(rowNum){
       <button class="btn danger small" id="popupDelBtn">Delete</button>
     `;
     
+    // Attach event listeners for the new modal buttons
     document.getElementById('popupEditBtn').onclick = () => {
-      document.getElementById('viewModalBackdrop').classList.remove('show');
-      openEditModal(rowNum); 
+      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
+      openEditModal(rowNum); // Open Edit Modal
     };
     
     document.getElementById('popupDelBtn').onclick = () => {
-      document.getElementById('viewModalBackdrop').classList.remove('show'); 
-      deleteRow(rowNum); 
+      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
+      deleteRow(rowNum); // Trigger Delete
     };
   } else {
-    actionsDiv.innerHTML = ''; 
+    actionsDiv.innerHTML = ''; // Hide buttons for guests
   }
   
   document.getElementById('viewModalBackdrop').classList.add('show');
@@ -813,16 +808,42 @@ function closeEditModal(){ document.getElementById('editModalBackdrop').classLis
 document.getElementById('editModalClose').addEventListener('click', closeEditModal);
 document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
 
-document.getElementById('editSaveBtn').addEventListener('click', async () => {
+
+// ===== UPDATED SAVING LOGIC HERE =====
+document.getElementById('editSaveBtn').addEventListener('click', async (e) => {
+  const btn = e.target;
+  
+  // Prevent duplicate entries if clicked/touched multiple times
+  if (btn.disabled) return; 
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
   const data = {};
   document.querySelectorAll('#editFormGrid [data-field]').forEach(i => data[i.dataset.field] = i.value);
   const payload = state.editingRow ? { action: 'update', row: state.editingRow, data } : { action: 'add', data };
+
+  // Close the popup immediately
+  closeEditModal();
+  
+  // Update background status line
+  setStatus('loading', 'Saving record...');
+
   try {
     await fetch(CONFIG.WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
-    await loadData();
-    closeEditModal();
-  } catch(err){ alert('Error saving: ' + err.message); }
+    await loadData(); // This refreshes the table
+    
+    // Popup saved
+    alert('Record saved successfully!'); 
+  } catch(err) { 
+    alert('Error saving: ' + err.message); 
+  } finally {
+    // Reset button state
+    btn.disabled = false;
+    btn.textContent = 'Save';
+  }
 });
+// =====================================
+
 
 async function deleteRow(rowNum){
   if (!confirm('Delete this record?')) return;
