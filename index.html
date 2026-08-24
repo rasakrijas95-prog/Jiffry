@@ -151,17 +151,6 @@
   .field input::placeholder { color: rgba(255,255,255,0.7); }
   .field input:focus{ outline: none; border-bottom-color: #fff; }
   
-  .input-icon {
-    position: absolute;
-    left: 4px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    fill: #fff;
-    opacity: 0.8;
-  }
-
   .login-btn{
     width:100%;
     padding:14px 0;
@@ -320,11 +309,10 @@
     background: var(--card-bg);
     border:1px solid var(--line);
     border-radius:var(--radius);
-    overflow-x: auto; 
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden; /* Changed to prevent horizontal scroll breaking borders */
   }
   
-  table{width:100%;border-collapse:collapse;font-size:13.5px; min-width: 600px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px; }
   thead th{
     text-align:left; padding:14px 18px;
     background: var(--table-head); color:var(--ink);
@@ -332,8 +320,13 @@
     border-bottom:2px solid var(--line); white-space:nowrap;
   }
   tbody td{ padding:13px 18px; border-bottom:1px solid var(--line); color: var(--ink); }
-  .row-actions{display:flex;gap:8px;}
   
+  /* Touch-to-view Row styling */
+  .clickable-row { cursor: pointer; transition: background 0.2s; }
+  .clickable-row:hover { background: rgba(0, 0, 0, 0.03); }
+  body.dark-theme .clickable-row:hover { background: rgba(255, 255, 255, 0.05); }
+
+  .row-actions{display:flex;gap:8px;}
   .count-note{font-size:12.5px;color:var(--muted);margin:16px 4px 0;}
 
   /* ---------- Modals ---------- */
@@ -367,7 +360,7 @@
     display:flex;justify-content:flex-end;gap:14px;
   }
 
-  /* Responsive fixes */
+  /* ---------- Responsive fixes ---------- */
   @media (max-width: 640px) {
     .form-grid { grid-template-columns: 1fr; }
     .topbar { flex-direction: column; align-items: stretch; text-align: center; }
@@ -375,6 +368,42 @@
     .topbar-actions { justify-content: center; }
     main { padding: 16px 12px; }
     .stat-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Mobile Table Card Layout */
+    table, thead, tbody, th, td, tr { display: block; }
+    thead tr { display: none; /* Hide standard headers on mobile */ }
+    
+    .table-wrap { border: none; background: transparent; overflow: visible; }
+    
+    tr.clickable-row { 
+      margin-bottom: 16px; 
+      border: 1px solid var(--line); 
+      border-radius: var(--radius); 
+      background: var(--card-bg);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    
+    td {
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      text-align: right; 
+      border-bottom: 1px solid var(--line); 
+      padding: 12px 16px;
+    }
+    
+    td:last-child { border-bottom: 0; justify-content: flex-end; }
+    
+    td::before {
+      content: attr(data-label); 
+      font-weight: 700; 
+      text-transform: uppercase;
+      font-size: 11px; 
+      color: var(--muted); 
+      margin-right: 15px; 
+      text-align: left;
+    }
   }
 </style>
 </head>
@@ -600,23 +629,20 @@ document.getElementById('btnRefresh').addEventListener('click', loadData);
 
 function findHeader(keywords){ return state.headers.find(h => keywords.some(k => h.toLowerCase().includes(k))); }
 
-/* --- UPDATED DASHBOARD LOGIC --- */
+/* --- DASHBOARD LOGIC --- */
 function renderDashboard(){
   const grid = document.getElementById('statGrid');
   const rows = state.rows;
   const cards = [];
   
-  // 1. Total Records
   cards.push({ label: 'Total profiles', num: rows.length });
   
-  // 2. Households (Unique House Numbers)
   const houseCol = findHeader(['house number', 'house no']);
   if (houseCol){
     const households = new Set(rows.map(r => r[houseCol]).filter(v => v !== '' && v != null));
     cards.push({ label: 'Households', num: households.size });
   }
   
-  // 3. Gender breakdown
   const sexCol = findHeader(['sex','gender']);
   let male = 0, female = 0;
   if (sexCol){
@@ -629,7 +655,6 @@ function renderDashboard(){
     cards.push({ label: 'Female', num: female });
   }
 
-  // 4. Age breakdown
   const ageCol = findHeader(['age']);
   if (ageCol){
     let minors = 0, adults = 0, seniors = 0;
@@ -646,14 +671,12 @@ function renderDashboard(){
     cards.push({ label: 'Seniors (60+)', num: seniors });
   }
 
-  // 5. NIC Registration
   const nicCol = findHeader(['n.i.c', 'nic']);
   if (nicCol) {
     const withNic = rows.filter(r => String(r[nicCol]||'').trim() !== '').length;
     cards.push({ label: 'Registered NICs', num: withNic });
   }
 
-  // 6. Contact Info
   const contactCol = findHeader(['contact', 'phone']);
   if (contactCol) {
     const withContact = rows.filter(r => String(r[contactCol]||'').trim() !== '').length;
@@ -686,23 +709,30 @@ function renderTableHead(){
   document.getElementById('tableHeadRow').innerHTML = cols.map(c => `<th>${c}</th>`).join('') + `<th>Actions</th>`;
 }
 
+/* --- UPDATED TABLE RENDERING LOGIC --- */
 function renderTableBody(){
   const cols = activeColumns();
   const tbody = document.getElementById('tableBody');
   const rows = state.filtered;
   if (!rows.length){ tbody.innerHTML = `<tr><td colspan="100%">No records found.</td></tr>`; return; }
 
+  // Each row is now given the 'clickable-row' class and an onclick event.
+  // We pass 'data-label' to each cell for the responsive CSS to read on mobile.
   tbody.innerHTML = rows.map(r => {
-    const cells = cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('');
+    const cells = cols.map(c => `<td data-label="${c}">${escapeHtml(r[c] ?? '')}</td>`).join('');
+    
+    // Stop propagation on buttons so clicking 'Edit' or 'Del' doesn't also fire the row's 'View' click
     const actions = state.role === 'admin'
       ? `<button class="btn small" data-view="${r._row}">View</button> <button class="btn small" data-edit="${r._row}">Edit</button> <button class="btn danger small" data-del="${r._row}">Del</button>`
       : `<button class="btn small" data-view="${r._row}">View</button>`;
-    return `<tr>${cells}<td><div class="row-actions">${actions}</div></td></tr>`;
+      
+    return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${cells}<td data-label="Actions"><div class="row-actions" onclick="event.stopPropagation()">${actions}</div></td></tr>`;
   }).join('');
   
-  tbody.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => openViewModal(Number(b.dataset.view))));
-  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditModal(Number(b.dataset.edit))));
-  tbody.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteRow(Number(b.dataset.del))));
+  // Attach individual button event listeners (with event propagation prevention)
+  tbody.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); openViewModal(Number(b.dataset.view)); }));
+  tbody.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); openEditModal(Number(b.dataset.edit)); }));
+  tbody.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); deleteRow(Number(b.dataset.del)); }));
 }
 
 function escapeHtml(v){ return String(v).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
