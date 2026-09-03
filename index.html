@@ -7,47 +7,47 @@
 <style>
   /* BASE & LIGHT THEME VARIABLES */
   :root {
-    --ink: #1c2b2e;
-    --paper: #f6f3ea;
+    --ink: #1e293b;
+    --paper: #f8fafc;
     --panel: #ffffff;
-    --line: rgba(217, 210, 192, 0.6);
-    --teal: #0f4c46;
-    --teal-dark: #0a332f;
-    --amber: #c17a2c;
-    --amber-light: #f0dcb8;
-    --red: #a83c3c;
-    --green: #3c7a54;
-    --muted: #6b6558;
+    --line: rgba(148, 163, 184, 0.3);
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --accent: #06b6d4;
+    --accent-light: #cffafe;
+    --red: #ef4444;
+    --green: #10b981;
+    --warning: #f59e0b;
+    --muted: #64748b;
     --radius: 16px;
     --serif: 'Iowan Old Style','Georgia','Palatino Linotype',serif;
-    --sans: 'Avenir Next','Segoe UI',Helvetica,Arial,sans-serif;
-    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(15, 76, 70, 0.05), transparent 50%), radial-gradient(circle at 90% 80%, rgba(193, 122, 44, 0.05), transparent 50%), var(--paper);
-    --table-head: #eee7d4;
+    --sans: 'Inter', 'Avenir Next','Segoe UI',Helvetica,Arial,sans-serif;
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.05), transparent 50%), radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05), transparent 50%), var(--paper);
+    --table-head: #f1f5f9;
     --card-bg: rgba(255, 255, 255, 0.95);
-    --input-bg: rgba(255, 255, 255, 0.7);
-    
-    /* Login Luxury Colors */
-    --gold: #d4af37;
-    --dark-gold: #aa8c2c;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --brand-main: #4f46e5;
+    --brand-alt: #06b6d4;
   }
 
   /* DARK THEME VARIABLES */
   body.dark-theme {
-    --ink: #e0e6e6;
-    --paper: #12181b;
-    --panel: #1e2629;
+    --ink: #f8fafc;
+    --paper: #0f172a;
+    --panel: #1e293b;
     --line: rgba(255, 255, 255, 0.1);
-    --teal: #3b8a82;
-    --teal-dark: #7acfc5;
-    --amber: #d4954b;
-    --amber-light: #523f26;
-    --red: #c95d5d;
-    --green: #59a376;
-    --muted: #9a958b;
-    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(15, 76, 70, 0.1), transparent 50%), radial-gradient(circle at 90% 80%, rgba(193, 122, 44, 0.1), transparent 50%), var(--paper);
-    --table-head: #2a3539;
-    --card-bg: #1e2629;
-    --input-bg: #2a3539;
+    --primary: #6366f1;
+    --primary-dark: #818cf8;
+    --accent: #22d3ee;
+    --accent-light: #164e63;
+    --red: #f87171;
+    --green: #34d399;
+    --warning: #fbbf24;
+    --muted: #94a3b8;
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1), transparent 50%), radial-gradient(circle at 90% 80%, rgba(34, 211, 238, 0.1), transparent 50%), var(--paper);
+    --table-head: #1e293b;
+    --card-bg: #1e293b;
+    --input-bg: #334155;
   }
 
   *{box-sizing:border-box;}
@@ -62,43 +62,33 @@
     transition: background-color 0.3s, color 0.3s;
   }
   
-  ::selection { background: var(--amber-light); }
+  ::selection { background: var(--accent-light); color: var(--primary-dark); }
+
+  /* ---------- Linear Progress Bar ---------- */
+  #progressBar {
+    position: fixed; top: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    width: 0%; z-index: 9999; transition: width 0.4s ease, opacity 0.3s ease;
+    opacity: 0; box-shadow: 0 0 10px var(--primary);
+  }
+  #progressBar.loading { width: 60%; opacity: 1; animation: loading-pulse 1s infinite alternate; }
+  #progressBar.done { width: 100%; opacity: 0; transition: width 0.3s, opacity 0.5s 0.4s; }
+
+  @keyframes loading-pulse { 0% { filter: brightness(1); } 100% { filter: brightness(1.3); } }
 
   /* ---------- Luxury Morphing Login ---------- */
   #loginScreen {
-    position: fixed; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 100;
-    background: #0d1117; 
-    overflow: hidden;
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    z-index: 100; background: #0b0f19; overflow: hidden;
   }
 
   .login-bg-shape {
-    position: absolute;
-    filter: blur(80px);
-    z-index: 1;
-    animation: morph 15s ease-in-out infinite alternate;
-    opacity: 0.6;
+    position: absolute; filter: blur(90px); z-index: 1;
+    animation: morph 15s ease-in-out infinite alternate; opacity: 0.6;
   }
-  .shape1 {
-    width: 45vw; height: 45vw;
-    min-width: 400px; min-height: 400px;
-    background: linear-gradient(135deg, #0f4c46, #3b8a82);
-    top: -10%; left: -10%;
-  }
-  .shape2 {
-    width: 35vw; height: 35vw;
-    min-width: 300px; min-height: 300px;
-    background: linear-gradient(135deg, #c17a2c, #8c5211);
-    bottom: -5%; right: -5%;
-    animation-delay: -7s;
-  }
-  .shape3 {
-    width: 25vw; height: 25vw;
-    background: linear-gradient(135deg, #1f2937, #4b5563);
-    top: 40%; left: 40%;
-    animation-delay: -3s;
-  }
+  .shape1 { width: 45vw; height: 45vw; min-width: 400px; min-height: 400px; background: linear-gradient(135deg, #4f46e5, #3730a3); top: -10%; left: -10%; }
+  .shape2 { width: 35vw; height: 35vw; min-width: 300px; min-height: 300px; background: linear-gradient(135deg, #06b6d4, #0891b2); bottom: -5%; right: -5%; animation-delay: -7s; }
+  .shape3 { width: 25vw; height: 25vw; background: linear-gradient(135deg, #1e293b, #334155); top: 40%; left: 40%; animation-delay: -3s; }
 
   @keyframes morph {
     0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -106,312 +96,153 @@
   }
 
   .login-card {
-    width: 380px; max-width: 90vw;
-    background: rgba(30, 36, 41, 0.45);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 32px;
+    width: 380px; max-width: 90vw; background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px;
     box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-    padding: 48px 40px;
-    display: flex; flex-direction: column; align-items: center;
-    z-index: 2;
-    position: relative;
+    padding: 48px 40px; display: flex; flex-direction: column; align-items: center; z-index: 2; position: relative;
   }
   
-  .login-header {
-    color: #fff;
-    font-family: var(--serif);
-    font-size: 26px;
-    margin: 0 0 24px 0;
-    text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    text-align: center;
-    letter-spacing: 0.5px;
-  }
+  .login-header { color: #fff; font-family: var(--serif); font-size: 26px; margin: 0 0 24px 0; text-shadow: 0 4px 12px rgba(0,0,0,0.5); text-align: center; letter-spacing: 0.5px; }
+  .login-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 28px; border: 3px solid rgba(255,255,255,0.15); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
 
-  .login-avatar {
-    width: 90px; height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 28px;
-    border: 3px solid rgba(255,255,255,0.1);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  }
-
-  .role-toggle {
-    display: flex; width: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 999px;
-    padding: 5px;
-    margin-bottom: 32px;
-  }
+  .role-toggle { display: flex; width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 999px; padding: 5px; margin-bottom: 32px; }
   .role-toggle button {
-    flex: 1; border: none; background: transparent;
-    padding: 10px 0; font-size: 12px; font-weight: 700;
-    color: rgba(255,255,255,0.5); border-radius: 999px;
-    cursor: pointer; transition: all 0.4s ease;
-    text-transform: uppercase; letter-spacing: 1px;
+    flex: 1; border: none; background: transparent; padding: 10px 0; font-size: 12px; font-weight: 700;
+    color: rgba(255,255,255,0.5); border-radius: 999px; cursor: pointer; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 1px;
   }
-  .role-toggle button.active {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
+  .role-toggle button.active { background: rgba(255, 255, 255, 0.15); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
   #loginForm { width: 100%; }
-
   .field { position: relative; margin-bottom: 28px; }
-  .field label { 
-    position: absolute; left: 16px; top: 12px;
-    font-size: 13px; color: rgba(255,255,255,0.5);
-    pointer-events: none; transition: 0.3s;
-    font-weight: 500;
-  }
-  
-  .field input {
-    width: 100%;
-    padding: 24px 16px 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    font-size: 15px;
-    background: rgba(0,0,0,0.2);
-    color: #fff;
-    transition: all 0.3s ease;
-  }
-  .field input:focus { 
-    outline: none; 
-    border-color: var(--gold); 
-    background: rgba(0,0,0,0.4);
-    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
-  }
-  
-  .field input:focus + label,
-  .field input:not(:placeholder-shown) + label {
-    top: 6px; font-size: 10px; color: var(--gold);
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
+  .field label { position: absolute; left: 16px; top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); pointer-events: none; transition: 0.3s; font-weight: 500; }
+  .field input { width: 100%; padding: 24px 16px 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 15px; background: rgba(0,0,0,0.3); color: #fff; transition: all 0.3s ease; }
+  .field input:focus { outline: none; border-color: var(--brand-alt); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15); }
+  .field input:focus + label, .field input:not(:placeholder-shown) + label { top: 6px; font-size: 10px; color: var(--brand-alt); text-transform: uppercase; letter-spacing: 0.5px; }
   
   .login-btn {
-    width: 100%; padding: 16px 0;
-    background: linear-gradient(135deg, var(--gold), var(--dark-gold));
-    color: #111; border: none; border-radius: 12px;
-    font-size: 14px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    cursor: pointer; transition: all 0.3s ease;
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+    width: 100%; padding: 16px 0; background: linear-gradient(135deg, var(--brand-main), var(--brand-alt));
+    color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+    cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
   }
-  .login-btn:hover { 
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
-  }
-  .login-error { color: #ff6b6b; font-size: 12px; margin-top: 16px; text-align: center; min-height: 16px; font-weight: 600;}
+  .login-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(79, 70, 229, 0.6); }
+  .login-error { color: #f87171; font-size: 12px; margin-top: 16px; text-align: center; min-height: 16px; font-weight: 600;}
 
   /* ---------- App shell ---------- */
   #app{display:none;min-height:100vh;flex-direction:column;}
   
-  header.topbar{
-    background: var(--panel); color: var(--ink);
-    padding:14px 22px; display:flex; align-items:center;
-    justify-content:space-between; flex-wrap:wrap; gap:10px;
-    border-bottom: 1px solid var(--line);
-  }
-  
+  header.topbar{ background: var(--panel); color: var(--ink); padding:14px 22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border-bottom: 1px solid var(--line); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
   .topbar-left{display:flex;align-items:center;gap:12px;}
-  .topbar-left .app-logo { width: 32px; height: 32px; border: 2px solid var(--amber); border-radius: 50%; }
+  .topbar-left .app-logo { width: 32px; height: 32px; border: 2px solid var(--primary); border-radius: 50%; }
   .topbar-left h1{ font-family:var(--serif); font-size:18px; margin:0; font-weight:600; }
   
-  .role-badge{
-    font-size:10px; text-transform:uppercase; padding:4px 8px;
-    border-radius:999px; background: var(--amber-light);
-    color: var(--ink); font-weight: 600;
-  }
-  
+  .role-badge{ font-size:10px; text-transform:uppercase; padding:4px 8px; border-radius:999px; background: var(--accent-light); color: var(--primary-dark); font-weight: 700; }
   .topbar-actions{display:flex;gap:8px;flex-wrap:wrap;}
   
-  .btn{
-    display:inline-flex; align-items:center; justify-content: center;
-    gap:6px; padding:8px 13px; border-radius:9px; border:1px solid var(--line);
-    font-size:12.5px; font-weight:600; cursor:pointer;
-    background: var(--panel); color: var(--ink);
-    transition: all 0.2s;
-  }
+  .btn{ display:inline-flex; align-items:center; justify-content: center; gap:6px; padding:8px 13px; border-radius:9px; border:1px solid var(--line); font-size:12.5px; font-weight:600; cursor:pointer; background: var(--panel); color: var(--ink); transition: all 0.2s; }
   .btn:hover{background: var(--line);}
-  .btn.primary{background:var(--amber);color:#fff;border-color:var(--amber);}
-  .btn.primary:hover{background:#a8681f;}
-  .btn.danger{background: rgba(168, 60, 60, 0.1); color:var(--red); border-color:var(--red);}
-  .btn.danger:hover{background: rgba(168, 60, 60, 0.2);}
+  .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .btn.primary:hover{background:var(--primary-dark);}
+  .btn.danger{background: rgba(239, 68, 68, 0.1); color:var(--red); border-color:var(--red);}
+  .btn.danger:hover{background: rgba(239, 68, 68, 0.2);}
   .btn.small{padding:5px 10px;font-size:11.5px;}
-
-  /* DISABLED BUTTON STATE */
-  .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .sync-icon { display: inline-block; }
   .syncing .sync-icon { animation: spin 1s linear infinite; }
 
-  nav.tabs{
-    display:flex; gap:4px; padding:0 22px; background: var(--panel); border-bottom: 1px solid var(--line);
-  }
-  nav.tabs button{
-    background:transparent; border:none; color: var(--muted);
-    padding:14px 20px; font-size:13px; font-weight:700;
-    text-transform:uppercase; cursor:pointer; border-bottom:3px solid transparent;
-  }
-  nav.tabs button.active{ color: var(--ink); border-bottom-color:var(--amber); }
+  nav.tabs{ display:flex; gap:4px; padding:0 22px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  nav.tabs button{ background:transparent; border:none; color: var(--muted); padding:14px 20px; font-size:13px; font-weight:700; text-transform:uppercase; cursor:pointer; border-bottom:3px solid transparent; }
+  nav.tabs button.active{ color: var(--primary); border-bottom-color:var(--primary); }
 
   main{flex:1;padding:24px 26px 60px;max-width:1280px;width:100%;margin:0 auto;}
 
-  .status-line{
-    font-size:12.5px; color:var(--muted); margin-bottom:20px;
-    display:flex; align-items:center; gap:8px; font-weight: 500;
-  }
+  .status-line{ font-size:12.5px; color:var(--muted); margin-bottom:20px; display:flex; align-items:center; gap:8px; font-weight: 500; }
   .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
   .dot.off{background:var(--red);}
-  .dot.loading{background:var(--amber); animation:pulse 1s infinite;}
+  .dot.loading{background:var(--accent); animation:pulse 1s infinite;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4; transform: scale(0.8);}}
 
   /* ---------- Dashboard Optimized ---------- */
-  .dashboard-profile-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 22px 28px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
-  .dashboard-profile-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--amber);
-  }
-  .dashboard-profile-info h2 {
-    font-family: var(--serif);
-    font-size: 22px;
-    margin: 0 0 4px 0;
-    color: var(--ink);
-  }
-  .dashboard-profile-info p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .section-title { font-family: var(--serif); font-size: 18px; color: var(--ink); margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  
+  .dashboard-profile-card { display: flex; align-items: center; gap: 20px; background: var(--card-bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 28px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .dashboard-profile-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+  .dashboard-profile-info h2 { font-family: var(--serif); font-size: 22px; margin: 0 0 4px 0; color: var(--ink); }
+  .dashboard-profile-info p { margin: 0; color: var(--muted); font-size: 13px; }
 
-  .stat-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:18px; margin-bottom:30px;
-  }
-  .stat-card{
-    background: var(--card-bg); border:1px solid var(--line);
-    border-radius:var(--radius); padding:22px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 4px solid var(--teal);
-  }
-  .stat-card:nth-child(2n) { border-left-color: var(--amber); }
-  .stat-card:nth-child(3n) { border-left-color: var(--green); }
-  .stat-card:nth-child(4n) { border-left-color: var(--red); }
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:18px; margin-bottom:30px; }
+  .stat-card{ background: var(--card-bg); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 4px solid var(--primary); }
+  .stat-card:nth-child(2n) { border-left-color: var(--accent); }
+  .stat-card:nth-child(3n) { border-left-color: var(--warning); }
+  .stat-card:nth-child(4n) { border-left-color: var(--green); }
+  .stat-card:nth-child(5n) { border-left-color: var(--red); }
   
-  .stat-card .num{
-    font-family:var(--serif); font-size:36px; line-height:1.1; color: var(--teal); font-weight: bold;
-  }
-  .stat-card .label{
-    font-size:11.5px; text-transform:uppercase; color:var(--muted); margin-top:8px; font-weight: 700;
-  }
+  .stat-card .num{ font-family:var(--serif); font-size:32px; line-height:1.1; color: var(--primary); font-weight: bold; }
+  .stat-card .label{ font-size:11px; text-transform:uppercase; color:var(--muted); margin-top:8px; font-weight: 700; line-height: 1.3;}
   
-  .panel{
-    background: var(--card-bg); border:1px solid var(--line);
-    border-radius:var(--radius); padding:28px; margin-bottom:24px;
-  }
-  .panel h2{ font-family:var(--serif); font-size:20px; margin:0 0 24px; color:var(--ink); }
+  .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 30px; }
   
-  .bars{display:flex;align-items:flex-end;gap:16px;height:180px;}
-  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
-  .bar-col .bar{
-    width:100%; max-width:64px; background:var(--teal);
-    border-radius:8px 8px 0 0; transition: height 0.6s;
-  }
-  .bar-col .bar-val{font-size:13px;color:var(--ink);font-weight:700;margin-bottom:8px;}
-  .bar-col .bar-label{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;}
+  .panel{ background: var(--card-bg); border:1px solid var(--line); border-radius:var(--radius); padding:28px; display:flex; flex-direction:column; }
+  .panel h2{ font-family:var(--serif); font-size:18px; margin:0 0 24px; color:var(--ink); }
+  
+  .bars{display:flex;align-items:flex-end;justify-content:space-around;gap:12px;height:180px; width: 100%;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%; min-width: 40px;}
+  .bar-col .bar{ width:100%; max-width:50px; background:var(--primary); border-radius:6px 6px 0 0; transition: height 0.6s; }
+  .bar-col:nth-child(even) .bar { background: var(--accent); }
+  .bar-col .bar-val{font-size:12.5px;color:var(--ink);font-weight:700;margin-bottom:6px;}
+  .bar-col .bar-label{font-size:11px;color:var(--muted);margin-top:10px;text-align:center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;}
+
+  /* ---------- Donut chart (Gender distribution) ---------- */
+  .donut-wrap{ display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; height:100%; }
+  .donut{ width:170px; height:170px; border-radius:50%; position:relative; flex-shrink:0; transition: background 0.6s; }
+  .donut::before{ content:""; position:absolute; inset:22px; border-radius:50%; background:var(--card-bg); display:flex; }
+  .donut-center{ position:absolute; inset:22px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .donut-center .val{ font-family:var(--serif); font-size:22px; font-weight:700; color:var(--ink); line-height:1.1; }
+  .donut-center .cap{ font-size:9.5px; text-transform:uppercase; color:var(--muted); font-weight:700; letter-spacing:0.4px; }
+  .donut-legend{ display:flex; flex-direction:column; gap:12px; }
+  .donut-legend .legend-item{ display:flex; align-items:center; gap:10px; font-size:13px; color:var(--ink); }
+  .donut-legend .swatch{ width:12px; height:12px; border-radius:4px; flex-shrink:0; }
+  .donut-legend .legend-num{ font-weight:700; font-family:var(--serif); font-size:15px; }
+  .donut-legend .legend-pct{ color:var(--muted); font-size:11.5px; }
+
+  /* ---------- Diagnostics ---------- */
+  .diag-details{ margin-top:10px; font-size:12px; color:var(--muted); }
+  .diag-details summary{ cursor:pointer; font-weight:600; }
+  .diag-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .diag-chip{ background:var(--table-head); border:1px solid var(--line); border-radius:999px; padding:3px 10px; font-size:11px; color:var(--ink); }
 
   /* ---------- Data tab ---------- */
   .data-toolbar{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:20px; }
   .search-wrap{position:relative;flex:1;min-width:220px;}
-  .search-wrap input{
-    width:100%; padding:12px 14px 12px 40px;
-    border:1px solid var(--line); border-radius:12px;
-    font-size:14px; background: var(--input-bg); color: var(--ink);
-  }
-  .search-wrap input:focus{ outline: none; border-color: var(--teal); }
-  .search-wrap::before{
-    content:"⌕"; position:absolute;left:14px;top:50%;transform:translateY(-50%);
-    color:var(--muted);font-size:20px;
-  }
+  .search-wrap input{ width:100%; padding:12px 14px 12px 40px; border:1px solid var(--line); border-radius:12px; font-size:14px; background: var(--input-bg); color: var(--ink); }
+  .search-wrap input:focus{ outline: none; border-color: var(--primary); }
+  .search-wrap::before{ content:"⌕"; position:absolute;left:14px;top:50%;transform:translateY(-50%); color:var(--muted);font-size:20px; }
   
-  .table-wrap{
-    background: var(--card-bg);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    overflow-x: auto; 
-    -webkit-overflow-scrolling: touch; 
-    position: relative;
-  }
-  
+  .table-wrap{ background: var(--card-bg); border:1px solid var(--line); border-radius:var(--radius); overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
   table{width:100%;border-collapse:collapse;font-size:13.5px; white-space: nowrap; min-width: 600px;}
-  
-  thead th{ background: var(--table-head); }
-  tbody td{ background: var(--card-bg); }
-
-  thead th{
-    text-align:left; padding:14px 18px;
-    color:var(--ink); font-size:11.5px; 
-    text-transform:uppercase; border-bottom:2px solid var(--line);
-  }
-  tbody td{ padding:13px 18px; border-bottom:1px solid var(--line); color: var(--ink); transition: background 0.2s; }
+  thead th{ background: var(--table-head); text-align:left; padding:14px 18px; color:var(--ink); font-size:11.5px; text-transform:uppercase; border-bottom:2px solid var(--line); }
+  tbody td{ background: var(--card-bg); padding:13px 18px; border-bottom:1px solid var(--line); color: var(--ink); transition: background 0.2s; }
 
   .clickable-row { cursor: pointer; }
   .clickable-row:hover td { background: rgba(0, 0, 0, 0.03); }
   body.dark-theme .clickable-row:hover td { background: rgba(255, 255, 255, 0.05); }
-
   .row-actions{display:flex;gap:8px;}
   .count-note{font-size:12.5px;color:var(--muted);margin:16px 4px 0;}
 
   /* ---------- Modals ---------- */
-  .modal-backdrop{
-    display:none; position:fixed;inset:0; background:rgba(0,0,0,0.6);
-    align-items:center;justify-content:center; z-index:50; padding:20px;
-  }
+  .modal-backdrop{ display:none; position:fixed;inset:0; background:rgba(0,0,0,0.6); align-items:center;justify-content:center; z-index:50; padding:20px; }
   .modal-backdrop.show{display:flex;}
-  .modal{
-    background: var(--panel); border: 1px solid var(--line); border-radius:var(--radius);
-    width:680px; max-width:100%; max-height:88vh; display:flex; flex-direction:column;
-  }
-  .modal-head{
-    padding:22px 28px; border-bottom:1px solid var(--line);
-    display:flex;align-items:center;justify-content:space-between;
-  }
+  .modal{ background: var(--panel); border: 1px solid var(--line); border-radius:var(--radius); width:680px; max-width:100%; max-height:88vh; display:flex; flex-direction:column; }
+  .modal-head{ padding:22px 28px; border-bottom:1px solid var(--line); display:flex;align-items:center;justify-content:space-between; }
   .modal-head h3{margin:0;font-family:var(--serif);font-size:20px;color:var(--ink);}
   .modal-close{background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);}
   .modal-body{padding:28px;overflow-y:auto;}
-  
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  .form-field label{
-    display:block;font-size:11.5px;text-transform:uppercase; color:var(--muted);margin-bottom:8px;
-  }
-  .form-field input{
-    width:100%;padding:12px 14px;border:1px solid var(--line);
-    border-radius:10px;font-size:14.5px; background:var(--input-bg); color: var(--ink);
-  }
-  .modal-foot{
-    padding:20px 28px;border-top:1px solid var(--line);
-    display:flex;justify-content:flex-end;gap:14px;
-  }
+  .form-field label{ display:block;font-size:11.5px;text-transform:uppercase; color:var(--muted);margin-bottom:8px; }
+  .form-field input{ width:100%;padding:12px 14px;border:1px solid var(--line); border-radius:10px;font-size:14.5px; background:var(--input-bg); color: var(--ink); }
+  .modal-foot{ padding:20px 28px;border-top:1px solid var(--line); display:flex;justify-content:flex-end;gap:14px; }
 
   @media (max-width: 640px) {
     .form-grid { grid-template-columns: 1fr; }
@@ -420,35 +251,29 @@
     .topbar-actions { justify-content: center; }
     main { padding: 16px 12px; }
     .stat-grid { grid-template-columns: 1fr 1fr; }
+    .charts-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
+
+<div id="progressBar"></div>
 
 <!-- ============ LOGIN ============ -->
 <div id="loginScreen">
   <div class="login-bg-shape shape1"></div>
   <div class="login-bg-shape shape2"></div>
   <div class="login-bg-shape shape3"></div>
-
   <div class="login-card">
     <h2 class="login-header">Addalaichenai - 09</h2>
     <img src="https://lh3.googleusercontent.com/pw/AP1GczMHGh0VPal1-aSySOhtBF9rAoZjbiAZH1AMldhLlaZUxf1Z_aFECgkZem-bKVwb5lCHgyqpzOkn44FDEirbQo5DPdRLkAwIJrsS3h76wn6flo-yItmJP9dKhQO8xPzydYfbSRHDgtSxUQE_JVn1etRSPg=w579-h869-s-no-gm" alt="User Avatar" class="login-avatar">
-
     <div class="role-toggle">
       <button type="button" id="tabAdmin" class="active">Jiffry GS</button>
       <button type="button" id="tabGuest">Guest</button>
     </div>
-
     <form id="loginForm">
-      <div class="field">
-        <input id="loginUser" type="text" autocomplete="username" placeholder=" " required>
-        <label for="loginUser">Username</label>
-      </div>
-      <div class="field">
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder=" " required>
-        <label for="loginPass">Password</label>
-      </div>
+      <div class="field"><input id="loginUser" type="text" autocomplete="username" placeholder=" " required><label for="loginUser">Username</label></div>
+      <div class="field"><input id="loginPass" type="password" autocomplete="current-password" placeholder=" " required><label for="loginPass">Password</label></div>
       <button type="submit" class="login-btn" id="loginSubmit">Sign In</button>
       <div class="login-error" id="loginError"></div>
     </form>
@@ -479,35 +304,48 @@
   </nav>
 
   <main>
-    <div class="status-line">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">Connecting…</span>
-    </div>
+    <div class="status-line"><span class="dot" id="statusDot"></span><span id="statusText">Connecting…</span></div>
 
     <!-- DASHBOARD -->
     <section id="panel-dashboard">
-      <!-- Profile section added from login screen -->
       <div class="dashboard-profile-card">
         <img src="https://lh3.googleusercontent.com/pw/AP1GczMHGh0VPal1-aSySOhtBF9rAoZjbiAZH1AMldhLlaZUxf1Z_aFECgkZem-bKVwb5lCHgyqpzOkn44FDEirbQo5DPdRLkAwIJrsS3h76wn6flo-yItmJP9dKhQO8xPzydYfbSRHDgtSxUQE_JVn1etRSPg=w579-h869-s-no-gm" alt="User Avatar" class="dashboard-profile-avatar">
         <div class="dashboard-profile-info">
           <h2>Addalaichenai - 09</h2>
-          <p>Family Registry Dashboard Profile</p>
+          <p>Registry Statistics & Analytics</p>
         </div>
       </div>
 
-      <div class="stat-grid" id="statGrid"></div>
-      <div class="panel">
-        <h2 id="chartTitle">Overview</h2>
-        <div class="bars" id="chartBars"></div>
+      <h3 class="section-title">Demographics & Age Categories</h3>
+      <div class="stat-grid" id="demoGrid"></div>
+      <div class="charts-grid">
+        <div class="panel"><h2>Gender Distribution</h2><div class="donut-wrap" id="chartGender"></div></div>
+        <div class="panel"><h2>Age Category Breakdown</h2><div class="bars" id="chartAge"></div></div>
       </div>
+
+      <h3 class="section-title">Categorical Statistics</h3>
+      <div class="charts-grid">
+        <div class="panel"><h2>Education Breakdown</h2><div class="bars" id="chartEducation"></div></div>
+        <div class="panel"><h2>Occupation Top Fields</h2><div class="bars" id="chartOccupation"></div></div>
+        <div class="panel"><h2>Income Classification</h2><div class="bars" id="chartIncome"></div></div>
+      </div>
+
+      <h3 class="section-title">Social Welfare, Allowances & Health</h3>
+      <div class="stat-grid" id="welfareGrid"></div>
+      <details class="diag-details" id="welfareDiag" style="display:none;">
+        <summary>Column matching details</summary>
+        <div id="welfareDiagBody"></div>
+      </details>
+
+      <h3 class="section-title">Utilities & Housing Status</h3>
+      <div class="stat-grid" id="utilityGrid"></div>
+
     </section>
 
     <!-- DATA -->
     <section id="panel-data" style="display:none;">
       <div class="data-toolbar">
-        <div class="search-wrap">
-          <input id="searchInput" placeholder="Search name, house no, NIC, contact…">
-        </div>
+        <div class="search-wrap"><input id="searchInput" placeholder="Search name, house no, NIC, contact…"></div>
         <button class="btn primary" id="btnAdd">+ Add record</button>
       </div>
       <div class="table-wrap">
@@ -524,10 +362,7 @@
 <!-- Modals -->
 <div class="modal-backdrop" id="editModalBackdrop">
   <div class="modal">
-    <div class="modal-head">
-      <h3 id="editModalTitle">Add record</h3>
-      <button class="modal-close" id="editModalClose">×</button>
-    </div>
+    <div class="modal-head"><h3 id="editModalTitle">Add record</h3><button class="modal-close" id="editModalClose">×</button></div>
     <div class="modal-body"><div class="form-grid" id="editFormGrid"></div></div>
     <div class="modal-foot">
       <span class="modal-msg" id="editModalMsg"></span>
@@ -539,12 +374,8 @@
 
 <div class="modal-backdrop" id="viewModalBackdrop">
   <div class="modal">
-    <div class="modal-head">
-      <h3 id="viewModalTitle">Record</h3>
-      <button class="modal-close" id="viewModalClose">×</button>
-    </div>
+    <div class="modal-head"><h3 id="viewModalTitle">Record</h3><button class="modal-close" id="viewModalClose">×</button></div>
     <div class="modal-body"><div class="detail-list" id="viewDetailList"></div></div>
-    <!-- UPDATED FOOTER -->
     <div class="modal-foot" style="justify-content: space-between;">
       <div id="viewModalActions" class="row-actions"></div>
       <button class="btn" id="viewCloseBtn">Close</button>
@@ -571,9 +402,7 @@ if (currentTheme === 'dark') document.body.classList.add('dark-theme');
 
 btnTheme.addEventListener('click', () => {
   document.body.classList.toggle('dark-theme');
-  let theme = 'light';
-  if (document.body.classList.contains('dark-theme')) theme = 'dark';
-  localStorage.setItem('theme', theme);
+  localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
 });
 
 let loginRole = 'admin';
@@ -593,14 +422,12 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
-  const errEl = document.getElementById('loginError');
-
   if (loginRole === 'admin' && user === CONFIG.ADMIN_USER && pass === CONFIG.ADMIN_PASS) {
     startApp('admin');
   } else if (loginRole === 'guest' && user === CONFIG.GUEST_USER && pass === CONFIG.GUEST_PASS) {
     startApp('guest');
   } else {
-    errEl.textContent = 'Incorrect credentials.';
+    document.getElementById('loginError').textContent = 'Incorrect credentials.';
   }
 });
 
@@ -609,7 +436,15 @@ function startApp(role){
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   document.getElementById('roleBadge').textContent = role === 'admin' ? 'JIFFRY GS' : 'GUEST';
+  
+  // Apply Role Restrictions
   document.getElementById('btnAdd').style.display = role === 'admin' ? 'inline-flex' : 'none';
+  document.getElementById('btnPrint').style.display = role === 'admin' ? 'inline-flex' : 'none';
+  document.getElementById('btnSheet').style.display = role === 'admin' ? 'inline-flex' : 'none';
+  
+  // RESTRICT EXPORT CSV FOR GUEST
+  document.getElementById('btnExport').style.display = role === 'admin' ? 'inline-flex' : 'none';
+  
   loadData();
 }
 
@@ -633,8 +468,12 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 function setStatus(mode, text){
   const dot = document.getElementById('statusDot');
+  const pb = document.getElementById('progressBar');
   dot.className = 'dot' + (mode === 'loading' ? ' loading' : mode === 'off' ? ' off' : '');
   document.getElementById('statusText').textContent = text;
+  if (mode === 'loading') pb.className = 'loading';
+  else if (mode === 'on') pb.className = 'done';
+  else pb.className = '';
 }
 
 async function loadData(){
@@ -656,99 +495,279 @@ async function loadData(){
 }
 document.getElementById('btnRefresh').addEventListener('click', loadData);
 
-function findHeader(keywords){ return state.headers.find(h => keywords.some(k => h.toLowerCase().includes(k))); }
+// Normalize a string for fuzzy, punctuation/space/case-insensitive header matching
+function normalizeStr(s){ return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+
+// Find the best-matching header for a list of keywords. Prefers the shortest
+// (most specific) header among all headers that contain any keyword.
+function findHeader(keywords){
+  const keys = keywords.map(normalizeStr).filter(Boolean);
+  let best = null, bestLen = Infinity;
+  state.headers.forEach(h => {
+    const nh = normalizeStr(h);
+    if (!nh) return;
+    if (keys.some(k => nh.includes(k))) {
+      if (nh.length < bestLen) { bestLen = nh.length; best = h; }
+    }
+  });
+  return best;
+}
+
+// Derive gender from a Sri Lankan NIC number.
+// Old format: 9 digits + V/X  -> YY DDD SSS C   (day-of-year at position 3-5)
+// New format: 12 digits       -> YYYY DDD SSSS  (day-of-year at position 5-7)
+// Day-of-year 1-366 = Male, 501-866 = Female (birth month/day offset by 500 for females).
+function genderFromNIC(raw){
+  const nic = String(raw == null ? '' : raw).trim().toUpperCase().replace(/[\s-]+/g, '');
+  if (!nic) return null;
+  let dayStr = null;
+  if (/^\d{9}[VX]$/.test(nic)) {
+    dayStr = nic.slice(2, 5); // after 2-digit year
+  } else if (/^\d{12}$/.test(nic)) {
+    dayStr = nic.slice(4, 7); // after 4-digit year
+  } else {
+    return null;
+  }
+  const day = parseInt(dayStr, 10);
+  if (isNaN(day)) return null;
+  if (day >= 1 && day <= 366) return 'male';
+  if (day >= 501 && day <= 866) return 'female';
+  return null;
+}
+
+// A value counts as "truthy" (present/eligible) unless it's empty or an
+// explicit negative response. This covers Yes/No, Y/N, 1/0, True/False,
+// Eligible/Not eligible, checkmarks, amounts (e.g. "5000"), names, etc.
+function isTruthyValue(raw){
+  const v = String(raw == null ? '' : raw).trim();
+  if (!v) return false;
+  const low = v.toLowerCase();
+  const falsy = new Set(['no','false','0','n','none','nil','na','n/a','-','null','not eligible','ineligible','not applicable','not available','no.','0.0']);
+  if (falsy.has(low)) return false;
+  if (/^(no|not)\b/.test(low)) return false;
+  return true;
+}
+
+// Count how many rows have a truthy value in a given column
+function countTruthyValues(col) {
+  if (!col) return 0;
+  return state.rows.filter(r => isTruthyValue(r[col])).length;
+}
+
+// Tally frequencies of categories in a column (case-insensitive grouping,
+// original casing kept for display)
+function tallyCategories(col) {
+  if (!col) return [];
+  const map = {};
+  state.rows.forEach(r => {
+    const raw = String(r[col] == null ? '' : r[col]).trim();
+    if (!raw) return;
+    const key = raw.toLowerCase();
+    if (!map[key]) map[key] = { label: raw, count: 0 };
+    map[key].count++;
+  });
+  return Object.values(map).sort((a, b) => b.count - a.count).slice(0, 6).map(d => [d.label, d.count]);
+}
+
+function createBarChartHTML(tallyData) {
+  if (!tallyData || tallyData.length === 0) return `<div class="count-note">No data available</div>`;
+  const max = Math.max(...tallyData.map(d => d[1]), 1);
+  return tallyData.map(d => `
+    <div class="bar-col">
+      <div class="bar-val">${d[1]}</div>
+      <div class="bar" style="height:${Math.max(4, (d[1]/max)*130)}px"></div>
+      <div class="bar-label" title="${d[0]}">${d[0]}</div>
+    </div>`).join('');
+}
+
+// Renders a donut chart from segments: [{ label, val, color }]
+function createDonutChartHTML(segments) {
+  const total = segments.reduce((s, d) => s + d.val, 0);
+  if (!total) return `<div class="count-note">No data available</div>`;
+  let cumulative = 0;
+  const stops = segments.map(seg => {
+    const start = (cumulative / total) * 360;
+    cumulative += seg.val;
+    const end = (cumulative / total) * 360;
+    return `${seg.color} ${start}deg ${end}deg`;
+  }).join(', ');
+  const legend = segments.map(seg => `
+    <div class="legend-item">
+      <span class="swatch" style="background:${seg.color}"></span>
+      <div>
+        <div class="legend-num">${seg.val.toLocaleString()}</div>
+        <div class="legend-pct">${seg.label} · ${((seg.val/total)*100).toFixed(1)}%</div>
+      </div>
+    </div>`).join('');
+  return `
+    <div class="donut" style="background: conic-gradient(${stops});">
+      <div class="donut-center"><div class="val">${total.toLocaleString()}</div><div class="cap">Total</div></div>
+    </div>
+    <div class="donut-legend">${legend}</div>`;
+}
+
+function renderStatCards(elId, cards, emptyMsg){
+  const el = document.getElementById(elId);
+  if (!cards.length) { el.innerHTML = `<p class="count-note">${emptyMsg}</p>`; return; }
+  el.innerHTML = cards.map(c => `<div class="stat-card"><div class="num">${c.num.toLocaleString()}</div><div class="label">${c.label}</div></div>`).join('');
+}
+
+// Category definitions for the Social Welfare, Allowances & Health grid.
+// Each entry lists several keyword variants so the dashboard still finds the
+// right column even if the sheet uses slightly different wording.
+const WELFARE_DEFS = [
+  { label: 'Aswasuma Holders',        keywords: ['aswasuma'] },
+  { label: 'Samurdhi Holders',        keywords: ['samurdhi'] },
+  { label: 'Pensioners (W&OP)',       keywords: ['pension', 'w&op', 'wop'] },
+  { label: "Elders' Allowance",       keywords: ['eldersallowance', 'elderlyallowance', 'seniorcitizenallowance', 'elder', '5000'] },
+  { label: 'Public Assistance (PAMA)',keywords: ['pama', 'publicassistance', '1500', '250'] },
+  { label: 'Widows / Widowers',       keywords: ['widow'] },
+  { label: 'Persons with Disability', keywords: ['disab', 'handicap', 'specialneed', 'differentlyabled'] },
+  { label: 'Kidney Patients (CKD)',   keywords: ['kidney', 'ckd', 'renal'] },
+  { label: 'Cancer Patients',         keywords: ['cancer'] },
+  { label: 'Diabetic Patients',       keywords: ['diabet'] },
+  { label: 'Heart / Cardiac Patients',keywords: ['heart', 'cardiac'] },
+  { label: 'Government Servants',     keywords: ['govtservant', 'governmentservant', 'publicservant', 'governmentemployee', 'govservant'] }
+];
+
+const UTILITY_DEFS = [
+  { label: 'Electricity',          keywords: ['electricity', 'power', 'ceb'] },
+  { label: 'Water Supply (WS)',    keywords: ['watersupply', 'pipebornewater', 'ndwsws'] },
+  { label: 'Wells',                keywords: ['well'] },
+  { label: 'Toilets / Sanitation', keywords: ['toilet', 'sanitation', 'latrine'] }
+];
 
 function renderDashboard(){
-  const grid = document.getElementById('statGrid');
   const rows = state.rows;
-  const cards = [];
-  
-  cards.push({ label: 'Total profiles', num: rows.length });
-  
-  const houseCol = findHeader(['house number', 'house no']);
-  if (houseCol){
-    const households = new Set(rows.map(r => r[houseCol]).filter(v => v !== '' && v != null));
-    cards.push({ label: 'Households', num: households.size });
-  }
-  
-  const sexCol = findHeader(['sex','gender']);
-  let male = 0, female = 0;
-  if (sexCol){
+
+  // 1. Demographics & Age Categories
+  const demoCards = [{ label: 'Total Profiles', num: rows.length }];
+
+  // Gender: read the Sex/Gender column first; for any row left blank or
+  // unrecognized, fall back to decoding gender from the NIC number.
+  const sexCol = findHeader(['sex', 'gender']);
+  const nicCol = findHeader(['nic', 'nationalidentity', 'identitycard']);
+  let male = 0, female = 0, otherGender = 0, fromSexCol = 0, fromNic = 0;
+  if (sexCol || nicCol) {
     rows.forEach(r => {
-      const v = String(r[sexCol] || '').toLowerCase();
-      if (v.startsWith('m')) male++;
-      else if (v.startsWith('f')) female++;
+      let g = null, src = null;
+      if (sexCol) {
+        const v = String(r[sexCol] || '').trim().toLowerCase();
+        if (v.startsWith('m')) { g = 'male'; src = 'sex'; }
+        else if (v.startsWith('f')) { g = 'female'; src = 'sex'; }
+      }
+      if (!g && nicCol) {
+        const ng = genderFromNIC(r[nicCol]);
+        if (ng) { g = ng; src = 'nic'; }
+      }
+      if (g === 'male') male++;
+      else if (g === 'female') female++;
+      else { otherGender++; return; }
+      if (src === 'sex') fromSexCol++; else if (src === 'nic') fromNic++;
     });
-    cards.push({ label: 'Male', num: male });
-    cards.push({ label: 'Female', num: female });
+    demoCards.push({ label: 'Male', num: male }, { label: 'Female', num: female });
   }
 
   const ageCol = findHeader(['age']);
-  if (ageCol){
-    let minors = 0, adults = 0, seniors = 0;
+  let minors = 0, adults = 0, seniors = 0;
+  if (ageCol) {
     rows.forEach(r => {
-      const age = Number(r[ageCol]);
-      if (!isNaN(age) && r[ageCol] !== '') {
-        if (age < 18) minors++; 
-        else if (age <= 60) adults++; 
-        else seniors++;
+      const raw = r[ageCol];
+      const age = Number(raw);
+      if (!isNaN(age) && String(raw).trim() !== '') {
+        if (age < 18) minors++; else if (age <= 60) adults++; else seniors++;
       }
     });
-    cards.push({ label: 'Minors (<18)', num: minors });
-    cards.push({ label: 'Adults (18-60)', num: adults });
-    cards.push({ label: 'Seniors (60+)', num: seniors });
+    demoCards.push(
+      { label: 'Minors (<18)', num: minors },
+      { label: 'Adults (18-60)', num: adults },
+      { label: 'Seniors (60+)', num: seniors }
+    );
+  }
+  renderStatCards('demoGrid', demoCards, 'No data loaded yet.');
+
+  // Gender donut chart (Sex/Gender column, with NIC-derived fallback)
+  const genderSegments = [];
+  if (male || female || otherGender) {
+    if (male) genderSegments.push({ label: 'Male', val: male, color: 'var(--primary)' });
+    if (female) genderSegments.push({ label: 'Female', val: female, color: 'var(--accent)' });
+    if (otherGender) genderSegments.push({ label: 'Other / Unmatched', val: otherGender, color: 'var(--warning)' });
+  }
+  if (genderSegments.length) {
+    let sourceNote = '';
+    if (fromNic > 0) {
+      sourceNote = `<p class="count-note" style="width:100%;margin-top:16px;">
+        ${fromSexCol.toLocaleString()} from the Sex/Gender column, ${fromNic.toLocaleString()} derived from N.I.C numbers${nicCol ? ` ("${nicCol}")` : ''} where Sex was blank or unrecognized.
+      </p>`;
+    } else if (!sexCol && nicCol) {
+      sourceNote = `<p class="count-note" style="width:100%;margin-top:16px;">All ${(male+female).toLocaleString()} genders derived from the "${nicCol}" column (no Sex/Gender column found).</p>`;
+    }
+    document.getElementById('chartGender').innerHTML = createDonutChartHTML(genderSegments) + sourceNote;
+  } else {
+    document.getElementById('chartGender').innerHTML = `<div class="count-note">No "Sex / Gender" or "N.I.C" column detected in the sheet.</div>`;
   }
 
-  const nicCol = findHeader(['n.i.c', 'nic']);
-  if (nicCol) {
-    const withNic = rows.filter(r => String(r[nicCol]||'').trim() !== '').length;
-    cards.push({ label: 'Registered NICs', num: withNic });
-  }
+  // Age category bar chart
+  const ageTally = (minors || adults || seniors) ? [['Minors (<18)', minors], ['Adults (18-60)', adults], ['Seniors (60+)', seniors]] : [];
+  document.getElementById('chartAge').innerHTML = ageTally.length
+    ? createBarChartHTML(ageTally)
+    : `<div class="count-note">No "Age" column detected in the sheet.</div>`;
 
-  const contactCol = findHeader(['contact', 'phone']);
-  if (contactCol) {
-    const withContact = rows.filter(r => String(r[contactCol]||'').trim() !== '').length;
-    cards.push({ label: 'Has Contact Info', num: withContact });
-  }
-  
-  grid.innerHTML = cards.map(c => `
-    <div class="stat-card">
-      <div class="num">${c.num.toLocaleString()}</div>
-      <div class="label">${c.label}</div>
-    </div>`).join('');
-    
-  renderChart(sexCol, male, female);
-}
+  // 2. Categorical Graphs (Education, Occupation, Income)
+  document.getElementById('chartEducation').innerHTML = createBarChartHTML(tallyCategories(findHeader(['education'])));
+  document.getElementById('chartOccupation').innerHTML = createBarChartHTML(tallyCategories(findHeader(['occupation', 'job', 'profession'])));
+  document.getElementById('chartIncome').innerHTML = createBarChartHTML(tallyCategories(findHeader(['income', 'salary'])));
 
-function renderChart(sexCol, male, female){
-  const bars = document.getElementById('chartBars');
-  if (sexCol){
-    const max = Math.max(1, male, female);
-    bars.innerHTML = `
-      <div class="bar-col"><div class="bar-val">${male}</div><div class="bar" style="height:${Math.max(4,(male/max)*130)}px"></div><div class="bar-label">Male</div></div>
-      <div class="bar-col"><div class="bar-val">${female}</div><div class="bar" style="height:${Math.max(4,(female/max)*130)}px"></div><div class="bar-label">Female</div></div>`;
-  }
+  // 3. Social Welfare, Allowances & Health Grid
+  const welfareCards = [];
+  const diagRows = [];
+  WELFARE_DEFS.forEach(def => {
+    const col = findHeader(def.keywords);
+    if (col) {
+      const num = countTruthyValues(col);
+      welfareCards.push({ label: def.label, num });
+      diagRows.push(`<div class="diag-chip">✅ ${def.label} → "${col}" (${num})</div>`);
+    } else {
+      diagRows.push(`<div class="diag-chip">⛔ ${def.label} → no matching column</div>`);
+    }
+  });
+
+  renderStatCards('welfareGrid', welfareCards, 'No matching welfare columns found in the sheet — expand "Column matching details" below to see what was detected.');
+
+  const welfareDiag = document.getElementById('welfareDiag');
+  const allHeaderChips = state.headers.map(h => `<div class="diag-chip">${escapeHtml(h)}</div>`).join('');
+  document.getElementById('welfareDiagBody').innerHTML = `
+    <div class="diag-chips">${diagRows.join('')}</div>
+    <p style="margin:14px 0 4px;">All columns detected in your sheet:</p>
+    <div class="diag-chips">${allHeaderChips || '<em>No headers loaded.</em>'}</div>`;
+  welfareDiag.style.display = welfareCards.length < WELFARE_DEFS.length ? '' : 'none';
+
+  // 4. Utilities & Housing Status Grid
+  const utilityCards = [];
+  UTILITY_DEFS.forEach(def => {
+    const col = findHeader(def.keywords);
+    if (col) utilityCards.push({ label: def.label, num: countTruthyValues(col) });
+  });
+  renderStatCards('utilityGrid', utilityCards, 'No matching utility columns found in the sheet.');
 }
 
 function activeColumns(){ return CONFIG.TABLE_COLUMNS.filter(c => state.headers.includes(c)); }
 
-// UPDATED function
 function renderTableHead(){
   const cols = activeColumns();
-  document.getElementById('tableHeadRow').innerHTML = cols.map(c => `<th>${c}</th>`).join('');
+  document.getElementById('tableHeadRow').innerHTML = `<th>S.No</th>` + cols.map(c => `<th>${c}</th>`).join('');
 }
 
-// UPDATED function
 function renderTableBody(){
   const cols = activeColumns();
   const tbody = document.getElementById('tableBody');
   const rows = state.filtered;
   if (!rows.length){ tbody.innerHTML = `<tr><td colspan="100%">No records found.</td></tr>`; return; }
 
-  // Only render the data cells, no action buttons in the row
-  tbody.innerHTML = rows.map(r => {
+  tbody.innerHTML = rows.map((r, i) => {
+    const indexCell = `<td><strong>${i + 1}</strong></td>`;
     const cells = cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('');
-    return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${cells}</tr>`;
+    return `<tr class="clickable-row" onclick="openViewModal(${r._row})">${indexCell}${cells}</tr>`;
   }).join('');
 }
 
@@ -760,36 +779,23 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   renderTableBody();
 });
 
-// UPDATED function
 function openViewModal(rowNum){
   const r = state.rows.find(x => x._row === rowNum);
   if (!r) return;
   
-  // Populate details
   document.getElementById('viewDetailList').innerHTML = state.headers.map(h => `<div style="margin-bottom:8px"><b>${h}:</b> ${escapeHtml(r[h] ?? '')}</div>`).join('');
   
-  // Handle Edit/Delete buttons inside the modal based on role
   const actionsDiv = document.getElementById('viewModalActions');
   if (state.role === 'admin') {
     actionsDiv.innerHTML = `
       <button class="btn primary small" id="popupEditBtn">Edit</button>
       <button class="btn danger small" id="popupDelBtn">Delete</button>
     `;
-    
-    // Attach event listeners for the new modal buttons
-    document.getElementById('popupEditBtn').onclick = () => {
-      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
-      openEditModal(rowNum); // Open Edit Modal
-    };
-    
-    document.getElementById('popupDelBtn').onclick = () => {
-      document.getElementById('viewModalBackdrop').classList.remove('show'); // Close View Modal
-      deleteRow(rowNum); // Trigger Delete
-    };
+    document.getElementById('popupEditBtn').onclick = () => { document.getElementById('viewModalBackdrop').classList.remove('show'); openEditModal(rowNum); };
+    document.getElementById('popupDelBtn').onclick = () => { document.getElementById('viewModalBackdrop').classList.remove('show'); deleteRow(rowNum); };
   } else {
-    actionsDiv.innerHTML = ''; // Hide buttons for guests
+    actionsDiv.innerHTML = ''; 
   }
-  
   document.getElementById('viewModalBackdrop').classList.add('show');
 }
 document.getElementById('viewModalClose').addEventListener('click', () => document.getElementById('viewModalBackdrop').classList.remove('show'));
@@ -808,49 +814,38 @@ function closeEditModal(){ document.getElementById('editModalBackdrop').classLis
 document.getElementById('editModalClose').addEventListener('click', closeEditModal);
 document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
 
-
-// ===== UPDATED SAVING LOGIC HERE =====
 document.getElementById('editSaveBtn').addEventListener('click', async (e) => {
   const btn = e.target;
-  
-  // Prevent duplicate entries if clicked/touched multiple times
   if (btn.disabled) return; 
   btn.disabled = true;
   btn.textContent = 'Saving...';
-
   const data = {};
   document.querySelectorAll('#editFormGrid [data-field]').forEach(i => data[i.dataset.field] = i.value);
   const payload = state.editingRow ? { action: 'update', row: state.editingRow, data } : { action: 'add', data };
 
-  // Close the popup immediately
   closeEditModal();
-  
-  // Update background status line
   setStatus('loading', 'Saving record...');
 
   try {
     await fetch(CONFIG.WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
-    await loadData(); // This refreshes the table
-    
-    // Popup saved
+    await loadData(); 
     alert('Record saved successfully!'); 
   } catch(err) { 
     alert('Error saving: ' + err.message); 
+    setStatus('off', 'Error: ' + err.message);
   } finally {
-    // Reset button state
     btn.disabled = false;
     btn.textContent = 'Save';
   }
 });
-// =====================================
-
 
 async function deleteRow(rowNum){
   if (!confirm('Delete this record?')) return;
   try {
+    setStatus('loading', 'Deleting record...');
     await fetch(CONFIG.WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', row: rowNum }) });
     await loadData();
-  } catch(err){ alert('Error deleting: ' + err.message); }
+  } catch(err){ alert('Error deleting: ' + err.message); setStatus('off', 'Error: ' + err.message); }
 }
 
 document.getElementById('btnExport').addEventListener('click', () => {
